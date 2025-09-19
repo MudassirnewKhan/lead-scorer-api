@@ -1,5 +1,6 @@
 const scoringService = require('../services/scoring.service');
 
+// Sets the product/offer context to score leads against
 exports.setOffer = (req, res) => {
   try {
     if (!req.body || Object.keys(req.body).length === 0) {
@@ -12,6 +13,7 @@ exports.setOffer = (req, res) => {
   }
 };
 
+// Uploads and processes the CSV file containing leads
 exports.uploadLeads = async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded.' });
@@ -24,6 +26,7 @@ exports.uploadLeads = async (req, res) => {
   }
 };
 
+// Triggers scoring logic (rule + AI) on uploaded leads
 exports.scoreLeads = async (req, res) => {
   try {
     const scoredLeads = await scoringService.scoreAllLeads();
@@ -33,6 +36,7 @@ exports.scoreLeads = async (req, res) => {
   }
 };
 
+// Returns the scored leads from memory
 exports.getResults = (req, res) => {
   const results = scoringService.getResults();
   res.status(200).json(results);
